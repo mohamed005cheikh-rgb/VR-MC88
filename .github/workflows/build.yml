@@ -1,4 +1,4 @@
-name: Build VR-MC88 APK and EXE
+name: Build VR-MC88 APK
 
 on:
   push:
@@ -22,47 +22,18 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Fix gradlew permissions and line endings
+      - name: Install Gradle via apt
         run: |
-          cd android
-          chmod +x gradlew
-          sed -i -e 's/\r$//' gradlew
+          sudo apt-get update
+          sudo apt-get install -y gradle
 
-      - name: Build Debug APK
+      - name: Build Debug APK using Global Gradle
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          gradle assembleDebug --no-daemon
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
           name: VR-MC88-Android-Debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
-
-  build-windows:
-    name: Build Windows EXE
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Dependencies directly
-        run: |
-          python -m pip install --upgrade pip
-          pip install PyQt5 pyinstaller pyserial
-
-      - name: Build EXE
-        run: |
-          pyinstaller --onefile --windowed --name="VR-MC88" main.py
-
-      - name: Upload EXE
-        uses: actions/upload-artifact@v4
-        with:
-          name: VR-MC88-Windows-EXE
-          path: dist/VR-MC88.exe
