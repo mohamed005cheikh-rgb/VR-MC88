@@ -53,15 +53,13 @@ jobs:
 
       - name: Build Android APK
         run: |
-          cd Android
           chmod +x gradlew
           ./gradlew assembleDebug
 
-      # هذا السطر هو الحل: يبحث عن أي ملف APK في أي مكان داخل مجلد Android
       - name: Publish APK to Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: Android/**/*.apk
+          files: app/build/outputs/apk/debug/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
