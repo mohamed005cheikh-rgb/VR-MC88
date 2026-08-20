@@ -1,38 +1,40 @@
 name: Build VR-MC88 APK
 
 on:
-    push:
-        branches: [main, master]
-    pull_request:
-        branches: [main, master]
-    workflow_dispatch:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
 
 jobs:
-    build-android:
-        name: Build Android APK
-        runs-on: ubuntu-latest
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-            - name: Set up JDK 17
-              uses: actions/setup-java@v4
-              with:
-                  java-version: '17'
-                  distribution: 'temurin'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-            - name: Setup Gradle
-              uses: gradle/actions/setup-gradle@v3
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
-            - name: Grant execute permission to gradlew and Build APK
-              run: |
-                  cd android
-                  chmod +x gradlew
-                  ./gradlew assembleDebug --no-daemon
+      - name: Fix Line Endings and Build APK
+        run: |
+          cd android
+          # إصلاح ملف gradlew ليتوافق مع نظام لينكس وتنسيق الأسطر
+          sed -i -e 's/\r$//' gradlew
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
 
-            - name: Upload Debug APK
-              uses: actions/upload-artifact@v4
-              with:
-                  name: VR-MC88-Android-Debug
-                  path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Upload Debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: VR-MC88-Android-Debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
