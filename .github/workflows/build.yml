@@ -22,10 +22,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Grant full permissions for Android build tools
+      - name: Fix Windows line endings and permissions
         run: |
           cd android
-          chmod -R +x gradlew gradle/
+          dos2unix gradlew || sed -i -e 's/\r$//' gradlew
           chmod +x gradlew
 
       - name: Build Debug APK
@@ -38,6 +38,7 @@ jobs:
         with:
           name: VR-MC88-Android-Debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
 
 
   build-windows:
