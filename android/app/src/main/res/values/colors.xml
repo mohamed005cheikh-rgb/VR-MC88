@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1A1A2E</color>
+    <color name="primary_dark">#16213E</color>
+    <color name="accent">#0F3460</color>
+    <color name="accent_light">#533483</color>
+    <color name="neon_blue">#00D2FF</color>
+    <color name="neon_purple">#7B2FF7</color>
+    <color name="neon_pink">#FF2E63</color>
+    <color name="background">#0A0A0A</color>
+    <color name="surface">#1E1E1E</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="connected">#00E676</color>
+    <color name="disconnected">#FF5252</color>
+</resources>
