@@ -28,12 +28,6 @@ jobs:
           cd Desktop
           pyinstaller --onefile --noconsole --name="VR.MC88" main.py
 
-      - name: Upload EXE Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: VR.MC88-Windows-EXE
-          path: Desktop/dist/VR.MC88.exe
-
       - name: Publish EXE to Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
@@ -60,21 +54,14 @@ jobs:
       - name: Build Android APK
         run: |
           cd Android
-          if [ -f "./gradlew" ]; then
-            chmod +x gradlew
-            ./gradlew assembleDebug
-          fi
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: VR.MC88-Android-APK
-          path: Android/app/build/outputs/apk/debug/*.apk
-
+      # هذا السطر هو الحل: يبحث عن أي ملف APK في أي مكان داخل مجلد Android
       - name: Publish APK to Release
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: Android/app/build/outputs/apk/debug/*.apk
+          files: Android/**/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
