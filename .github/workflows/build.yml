@@ -22,8 +22,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Make gradlew executable
-        run: chmod +x android/gradlew
+      - name: Fix gradlew permissions
+        run: |
+          cd android
+          chmod +x gradlew
+          git update-index --chmod=+x gradlew
 
       - name: Build Debug APK
         run: |
