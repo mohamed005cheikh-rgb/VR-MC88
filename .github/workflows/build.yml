@@ -25,7 +25,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build Debug APK
+      - name: Fix Repository Mode & Build APK
         run: |
           cd android
-          gradle assembleDebug --no-daemon --warning-mode all
+          # تجاوز قيد المستودعات الصارم لإصدارات Gradle الحديثة
+          echo "org.gradle.project.android.aapt2FromMavenOverride=true" >> gradle.properties
+          ./gradlew assembleDebug --no-daemon
