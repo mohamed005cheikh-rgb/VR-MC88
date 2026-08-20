@@ -29,13 +29,13 @@ jobs:
         run: |
           cd android
           rm -rf gradle/wrapper/*
-          gradle wrapper --gradle-version 8.5
+          gradle wrapper --gradle-version 8.0
           chmod +x gradlew
 
       - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug --no-daemon -Dorg.gradle.project.android.aapt2FromMavenOverride=true
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
