@@ -6,8 +6,11 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  # --- 1. بناء تطبيق الويندوز (EXE) على سيرفر ويندوز حقيقي ---
+  # --- 1. بناء تطبيق الويندوز (EXE) ---
   build-windows:
     runs-on: windows-latest
     steps:
@@ -25,14 +28,21 @@ jobs:
           cd Desktop
           pyinstaller --onefile --noconsole --name="VR.MC88" main.py
 
-      - name: Publish EXE Direct File to Release
+      - name: Upload EXE Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: VR.MC88-Windows-EXE
+          path: Desktop/dist/VR.MC88.exe
+
+      - name: Publish EXE to Release
         uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: Desktop/dist/VR.MC88.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # --- 2. بناء تطبيق الأندرويد (APK) على سيرفر لينكس ---
+  # --- 2. بناء تطبيق الأندرويد (APK) ---
   build-android:
     runs-on: ubuntu-latest
     steps:
@@ -52,14 +62,19 @@ jobs:
           cd Android
           if [ -f "./gradlew" ]; then
             chmod +x gradlew
-            ./gradlew assembleRelease
-          else
-            gradle assembleRelease
+            ./gradlew assembleDebug
           fi
 
-      - name: Publish APK Direct File to Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: Android/app/build/outputs/apk/**/*.apk
+          name: VR.MC88-Android-APK
+          path: Android/app/build/outputs/apk/debug/*.apk
+
+      - name: Publish APK to Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: Android/app/build/outputs/apk/debug/*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
