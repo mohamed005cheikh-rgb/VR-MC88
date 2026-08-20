@@ -30,10 +30,10 @@ jobs:
           cd android
           gradle build --no-daemon
 
-      - name: Upload Debug APK
+      - name: Upload APK Automatically
         uses: actions/upload-artifact@v4
         with:
-          name: VR-MC88-Android-Debug
+          name: VR-MC88-APK-Output
           path: |
-            android/app/build/outputs/apk/debug/*.apk
-            android/build/outputs/apk/debug/*.apk
+            **/*.apk
+            !**/build-cache/**
