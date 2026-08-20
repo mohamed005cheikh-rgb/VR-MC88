@@ -28,6 +28,7 @@ jobs:
       - name: Build Debug APK
         run: |
           cd android
+          sed -i -e 's/\r$//' gradlew
           chmod +x gradlew
           chmod +x gradle/wrapper/gradle-wrapper.jar || true
           find . -name "gradle-wrapper.jar" -exec chmod +x {} \;
