@@ -40,16 +40,12 @@ jobs:
           cd Desktop
           pyinstaller --onefile --noconsole --name="VR.MC88" main.py
 
-      # 3. حفظ ملف APK للأندرويد
-      - name: Upload Android Artifact
-        uses: actions/upload-artifact@v4
+      # 3. نشر الملفين مباشرة إلى صفحة Release (بصيغة exe و apk مباشرة)
+      - name: Publish Direct Files to Release Assets
+        uses: softprops/action-gh-release@v2
         with:
-          name: VR.MC88-Android-APK
-          path: Android/app/build/outputs/apk/release/*.apk
-
-      # 4. حفظ ملف EXE للوندوز
-      - name: Upload Windows Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: VR.MC88-Windows-EXE
-          path: Desktop/dist/VR.MC88.exe
+          files: |
+            Android/app/build/outputs/apk/release/*.apk
+            Desktop/dist/VR.MC88.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
