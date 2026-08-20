@@ -25,14 +25,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Regenerate Wrapper and Build APK
+      - name: Build APK Directly
         run: |
           cd android
-          # حذف ملفات wrapper التالفة وإنشاؤها نظيفة من خادم لينكس
-          rm -rf gradle/wrapper/*
-          gradle wrapper --gradle-version 8.0
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          # استخدام gradle مباشرة لتجنب مشاكل ملف gradlew التالف تماماً
+          gradle assembleDebug --no-daemon
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
