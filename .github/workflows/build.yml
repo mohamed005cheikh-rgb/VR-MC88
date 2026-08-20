@@ -22,11 +22,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Fix Windows line endings and permissions
+      - name: Fix gradlew permissions and line endings
         run: |
           cd android
-          dos2unix gradlew || sed -i -e 's/\r$//' gradlew
           chmod +x gradlew
+          sed -i -e 's/\r$//' gradlew
 
       - name: Build Debug APK
         run: |
@@ -38,8 +38,6 @@ jobs:
         with:
           name: VR-MC88-Android-Debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
-
-
 
   build-windows:
     name: Build Windows EXE
@@ -56,17 +54,15 @@ jobs:
 
       - name: Install Dependencies directly
         run: |
-          cd Desktop
           python -m pip install --upgrade pip
-          pip install PyQt5 pyinstaller
+          pip install PyQt5 pyinstaller pyserial
 
       - name: Build EXE
         run: |
-          cd Desktop
           pyinstaller --onefile --windowed --name="VR-MC88" main.py
 
       - name: Upload EXE
         uses: actions/upload-artifact@v4
         with:
           name: VR-MC88-Windows-EXE
-          path: Desktop/dist/VR-MC88.exe
+          path: dist/VR-MC88.exe
