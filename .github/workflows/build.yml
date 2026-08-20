@@ -1,4 +1,4 @@
-name: Build VR.MC88 APK and EXE
+name: Build VR-MC88 APK and EXE
 
 on:
   push:
@@ -8,8 +8,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  # --- 1. بناء تطبيق الأندرويد (APK) ---
-    # --- 1. بناء تطبيق الأندرويد (APK) ---
   build-android:
     name: Build Android APK
     runs-on: ubuntu-latest
@@ -24,7 +22,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
+      - name: Make gradlew executable
         run: chmod +x android/gradlew
 
       - name: Build Debug APK
@@ -38,35 +36,32 @@ jobs:
           name: VR-MC88-Android-Debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
-
-
-  # --- 2. بناء تطبيق الويندوز (EXE) ---
   build-windows:
     name: Build Windows EXE
     runs-on: windows-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-        
-    - name: Install dependencies directly
-      run: |
-        cd Desktop
-        python -m pip install --upgrade pip
-        pip install PyQt5 pyinstaller
-        
-    - name: Build EXE
-      run: |
-        cd Desktop
-        pyinstaller --onefile --windowed --name="VR.MC88" main.py
-        
-    - name: Upload EXE
-      uses: actions/upload-artifact@v4
-      with:
-        name: VR.MC88-Windows-EXE
-        path: Desktop/dist/VR.MC88.exe
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies directly
+        run: |
+          cd Desktop
+          python -m pip install --upgrade pip
+          pip install PyQt5 pyinstaller
+
+      - name: Build EXE
+        run: |
+          cd Desktop
+          pyinstaller --onefile --windowed --name="VR-MC88" main.py
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: VR-MC88-Windows-EXE
+          path: Desktop/dist/VR-MC88.exe
