@@ -25,11 +25,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build Project
+      - name: Build APK with System Gradle
         run: |
           cd android
-          # استخدام أمر build الشامل لتجنب أخطاء أسماء المهام المخصصة
-          ./gradlew build --no-daemon
+          # استخدام gradle النظام مباشرة لتجنب خطأ 126 الخاص بملف gradlew التالف
+          gradle build --no-daemon
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
