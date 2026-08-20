@@ -25,11 +25,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build APK Directly
+      - name: Build Project
         run: |
           cd android
-          # استخدام gradle مباشرة لتجنب مشاكل ملف gradlew التالف تماماً
-          gradle assembleDebug --no-daemon
+          # استخدام أمر build الشامل لتجنب أخطاء أسماء المهام المخصصة
+          ./gradlew build --no-daemon
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
